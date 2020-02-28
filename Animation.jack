@@ -1,0 +1,73 @@
+/**
+This class contains the tools needed for some rudimentary animation, that haven't yet been implemented.
+*/
+class Animation {
+    static Array masks;
+    static int i, screen;
+
+    // Random bit masks that can be applied to words to give the effect of disappearing/appearing
+    function void init () {
+        let masks = Array.new(16);
+        let masks[0] = 28215;
+        let masks[1] = 4143;
+        let masks[2] = 23729;
+        let masks[3] = 3019;
+        let masks[4] = 5734;
+        let masks[5] = 20429;
+        let masks[6] = 5788;
+        let masks[7] = 17442;
+        let masks[8] = 13285;
+        let masks[9] = 8945;
+        let masks[10] = 12702;
+        let masks[11] = 22236;
+        let masks[12] = 31998;
+        let masks[13] = 17249;
+        let masks[14] = 5578;
+        let masks[15] = 2285;
+        let i = 0;
+        let screen = 16384;
+        return;
+    }
+
+    // Applies the bit masks above in sequence, erasing part of the content of the location specified
+    function void erasemask(int location){
+        var int current, loc;
+
+        let loc = 16384 + location;
+        
+        let current = Memory.peek(loc);
+        let current = current & masks[i];
+        do Memory.poke(loc, current);
+
+        let i = i + 1;
+        let i = Numbers.mod(i, 15);
+        // if (i > 15) {
+        //     let i = i - 15;
+        // }
+        return;
+    }
+
+    // Shift all bits in a word to the right, bridging words
+    function void bitright(int fill, int step){
+        var int fill_l, fill_r, offset, reg, i;
+        let offset = 0;
+        let i = 0; 
+        let reg = step / 16;
+        
+        if (step > 0){
+            let offset = Maths.mod(step, 16);
+        }
+
+        if (offset < 15){
+            let fill_l = fill * Numbers.bitshift(offset);
+            if (offset = 0){ let fill_r = 0; }
+            if (offset > 0){ let fill_r = (fill & (Numbers.bitshift(offset)-1)) / Numbers.bitshift(16 - offset); }
+            while (i < 20){
+                do Memory.poke(screen + (32 * i) + reg, fill_l);
+                do Memory.poke(screen + (32 * i) + reg + 1, fill_r);
+                let i = i + 1;
+            }
+        }
+        return;
+    }
+}

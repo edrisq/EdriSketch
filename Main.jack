@@ -1,0 +1,14 @@
+/** 
+Initializes each class, creates the Etch A Sketch board and starts the game. 
+*/
+class Main {
+   function void main() {
+      do Animation.init();
+      do Frame.init();
+      do Numbers.init();
+      do Frame.drawFrame();
+      do Intro.logo();
+      do EdriSketch.sketch();
+      return;
+   }
+}

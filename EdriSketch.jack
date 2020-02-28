@@ -1,0 +1,86 @@
+/**
+This class controls/defines the Etch A Sketch game.
+ */
+class EdriSketch {
+    
+    function void sketch() {
+        var int key, x, y, mode, xerase, yerase, count;
+        let mode = 0;
+        let key = 0;
+        let x = 25;
+        let y = 27;
+        // let yerase = 0;
+        // let xerase = 0;
+        // let count = 0;
+
+        // Game exits when escape key (ASCII 140) is pressed
+        while (~(key = 140)){
+            // We only ever write to the screen, this is present for redundancy (and future features)
+            do Screen.setColor(true);
+
+            // Backspace (ASCII 129) "shakes" screen to erase
+            if (key = 129) { 
+                do Screen.clearScreen();
+                do Frame.drawFrame();
+                do Intro.logo();
+
+                // Animation currently being debugged
+                // while (xerase < 195) {
+                //     while (yerase < 30) {
+                //         while (count < 5) {
+                //             do Animation.erasemask((27*16)+(16*xerase)+yerase);
+                //             let count = count + 1;
+                //         }
+                //         let yerase = yerase + 1;
+                //     }
+                //     let xerase = xerase + 1;
+                // }
+                // let yerase = 2;
+                // let xerase = 0;
+                // let count = 0;
+            }
+            
+            // Game is currently perpetually "Easy" because non-symbol keys weren't registering
+            if (key = 101) { // Easy mode (directional buttons)
+                let mode = 0;
+            } 
+
+            // Classic mode disabled because Jack wasn't registering non-symbol key-presses 
+            // (it would indicate it was being pressed, but no effect)
+
+            // if (key = 99) { // Classic mode (left/right up/down separated)
+            //         let mode = 1;
+            // }
+
+            // Left = left arrow (Easy) or 'z' (Classic)
+            if ((x > 24) & (((mode = 1) & (key = 122)) | ((mode = 0) & (key = 130)))) {
+                        let x = x - 1;
+                        do Screen.drawPixel(x, y);
+            }
+
+            // Right = right arrow (Easy) or 'x' (Classic)
+            if ((x < 485) & (((mode = 1) & (key = 120)) | ((mode = 0) & (key = 132)))) {
+                        let x = x + 1;
+                        do Screen.drawPixel(x, y);
+            }
+
+            // Up = up arrow (Easy) or '.' (Classic)
+            if ((y > 26) & (((mode = 1) & (key = 46)) | ((mode = 0) & (key = 131)))) {
+                        let y = y - 1;
+                        do Screen.drawPixel(x, y);
+            }
+
+            // Down = down arrow (Easy) or '/' (Classic)
+            if ((y < 195) & (((mode = 1) & (key = 47)) | ((mode = 0) & (key = 133)))) {
+                        let y = y + 1;
+                        do Screen.drawPixel(x, y);
+            }
+
+            // Slight delay enables moving the cursor, otherwise it is out of control
+            do Sys.wait(5);
+            let key = Keyboard.keyPressed();
+        }    
+        return;
+    }
+
+}

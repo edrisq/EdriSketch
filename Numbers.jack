@@ -1,0 +1,55 @@
+/**
+This class contains numerical methods, primarily to facilitate animation (via bitshifting and masking)
+ */
+class Numbers {
+    static int powers;
+    static int initted;
+
+    function void init(){
+        if (initted = 1) { return; }
+
+        // Hardcoded powers of two to save on computation
+        let powers = Array.new(16);
+        let powers[0] = 1;
+        let powers[1] = 2; 
+        let powers[2] = 4;
+        let powers[3] = 8;
+        let powers[4] = 16;
+        let powers[5] = 32;
+        let powers[6] = 64;
+        let powers[7] = 128;
+        let powers[8] = 256;
+        let powers[9] = 512;
+        let powers[10] = 1024;
+        let powers[11] = 2048;
+        let powers[12] = 4096;
+        let powers[13] = 8192;
+        let powers[14] = 16384;
+        let powers[15] = 16384+16384; // This leads to overflow and results in a -32768 instead of 32768 (which can't be stored in 16 bits)
+        let initted = 1;
+        return;
+    }
+
+    // Determine the value of x mod y (i.e., the remainder if x is divided by y)
+    function int mod (int x, int y) {
+        var int floor;
+        let floor = x / y;  // As Jack doesn't have floats, all division is floor division (i.e., rounded down)
+        return x - (y * floor);
+    }
+
+    // Return a power of two; multiplying or dividing by this will shift all bits in a word right or left respectively
+    function int bitshift(int x){
+        return powers[x];
+    }
+
+    // Returns a word that has 1 in the x rightmost positions, for use with & to select subsets of a word
+    function int rightmask(int x){
+        return powers[16-x]-1;
+    }
+
+    // Returns a word that has 1 in the x leftmost positions, for use with & to select subsets of a word
+    function int leftmask(int x){
+        return ~(powers[16-x]-1);
+    }
+
+}
